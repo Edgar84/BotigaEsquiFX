@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class ConnexioBD {
 
     private static Connection connexioBD = null;
@@ -18,13 +22,9 @@ public class ConnexioBD {
      
     public void connexio() {
 
-        //String servidor = "jdbc:mysql://localhost:3306/";
-        //String usuari = "root";
-        //String passwd = "Client";
-        //String bbdd = "db_esqui";
-        
         String servidor = "jdbc:mysql://localhost:3306/";
         String usuari = "root";
+        //String passwd = "Client";
         String passwd = "12345";
         String bbdd = "db_esqui";
 
