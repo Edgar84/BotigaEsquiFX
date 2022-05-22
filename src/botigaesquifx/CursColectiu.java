@@ -1,22 +1,24 @@
 package botigaesquifx;
 
+import java.time.LocalDate;
+
 public class CursColectiu extends Curs {
 
-    private int idDia;
+    private LocalDate data;
     private int preuFinal;
 
-    public CursColectiu(int id, String nom, String dni_monitor, int idDia, int preuFinal) {
+    public CursColectiu(int id, String nom, String dni_monitor, LocalDate data, int preuFinal) {
         super(id, nom, dni_monitor);
-        this.idDia = idDia;
+        this.data = data;
         this.preuFinal = preuFinal;
     }
 
-    public int getIdDia() {
-        return idDia;
+    public LocalDate getData() {
+        return data;
     }
 
-    public void setIdDia(int idDia) {
-        this.idDia = idDia;
+    public void getData(LocalDate data) {
+        this.data = data;
     }
 
     public int getPreuFinal() {

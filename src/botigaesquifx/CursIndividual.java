@@ -9,6 +9,8 @@ public class CursIndividual extends Curs{
         this.preuHora = preuHora;
     }
 
+    // Getters i setters
+    
     public int getPreuHora() {
         return preuHora;
     }

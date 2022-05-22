@@ -9,8 +9,7 @@ public class CursCompeticio extends Curs {
     private LocalDate dataFi;
     private int preu;
 
-    public CursCompeticio(int id, String nom, String dni_monitor, int nivell, LocalDate dataInici, LocalDate dataFi,
-            int preu) {
+    public CursCompeticio(int id, String nom, String dni_monitor, int nivell, LocalDate dataInici, LocalDate dataFi, int preu) {
         super(id, nom, dni_monitor);
         this.nivell = nivell;
         this.dataInici = dataInici;
@@ -18,11 +17,7 @@ public class CursCompeticio extends Curs {
         this.preu = preu;
     }
 
-    @Override
-    public String toString() {
-        return "CursCompeticio [dataFi=" + dataFi + ", dataInici=" + dataInici + ", nivell=" + nivell + ", preu=" + preu
-                + "]";
-    }
+    // Getters i setters
 
     public int getNivell() {
         return nivell;
@@ -56,6 +51,9 @@ public class CursCompeticio extends Curs {
         this.preu = preu;
     }
 
-    
+    @Override
+    public String toString() {
+        return "CursCompeticio [dataFi=" + dataFi + ", dataInici=" + dataInici + ", nivell=" + nivell + ", preu=" + preu + "]";
+    }
 
 }

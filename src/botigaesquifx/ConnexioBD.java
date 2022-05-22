@@ -11,14 +11,6 @@ import java.sql.SQLException;
 public class ConnexioBD {
 
     private static Connection connexioBD = null;
-
-
-    /**
-     * 
-     * @param: Connexio a la base de dades
-     * 
-     */
-
      
     public void connexio() {
 
