@@ -224,7 +224,7 @@ public class ProvesContenidorsJavaFX extends Application {
         
         VBox global = new VBox();
         global.setAlignment(Pos.CENTER);
-        global.setPadding(new Insets(-92, 0, 0, 0));
+        global.setPadding(new Insets(-62, 0, 0, 0));
         
         
         VBox vlateral = new VBox();
