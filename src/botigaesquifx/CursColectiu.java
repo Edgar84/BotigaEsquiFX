@@ -29,4 +29,10 @@ public class CursColectiu extends Curs {
         this.preuFinal = preuFinal;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + ", preu: " + this.getPreuFinal(); 
+    }
+    
+
 }

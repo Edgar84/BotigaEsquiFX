@@ -49,6 +49,6 @@ public abstract class Curs{
 
     @Override
     public String toString() {
-        return "Curs [dni_monitor=" + dni_monitor + ", id=" + id + ", nom=" + nom + "]";
+        return "Curs [dni_monitor=" + this.getDni_monitor() + ", id=" + this.getId() + ", nom=" + this.getNom();
     }
 }

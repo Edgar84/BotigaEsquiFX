@@ -41,8 +41,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
-//
+/**
+* Classe per crear un escenari
+* @param conn requereix una connexió a la base de dades
+**/
 
 public class ProvesContenidorsJavaFX extends Application {
 
@@ -75,6 +77,7 @@ public class ProvesContenidorsJavaFX extends Application {
     Label lblIdCurs;
     Label lblPreuCurs;
     Label lblPreuFinalCurs;
+    Label emptyLabel;
 
     TextField txtNomCurs;
     TextField txtIdCurs;
@@ -84,7 +87,15 @@ public class ProvesContenidorsJavaFX extends Application {
     Tab tab1;
     Tab tab2;
     Tab tab3;
-
+    
+    /**
+    * Mètode main que llança l'aplicaió JavaFX
+    * Abans d'iniciar carrega 4 mètodes:
+    * consultarCursosCompeticio()
+    * consultarCursosCompeticio()
+    * consultarCursosCompeticio()
+    * consultarCursosCompeticio()
+    **/
     public static void main(String[] args) throws SQLException {
 
         conn.connexio();
@@ -129,7 +140,10 @@ public class ProvesContenidorsJavaFX extends Application {
 
         escenari.show();
     }
-
+    /**
+    * Part superior
+    * @param conn requereix una connexió a la base de dades
+    **/
     private Pane partSuperior() {
         HBox hb = new HBox();
         hb.setPadding(new Insets(15, 0, 15, 0));
@@ -148,21 +162,20 @@ public class ProvesContenidorsJavaFX extends Application {
         
         VBox vlateral = new VBox();
         Label titol = new Label("CLIENTS");
+        
         vlateral.getChildren().addAll(titol);
         vlateral.setPadding(new Insets(10.0));
         vlateral.setSpacing(10.0);
-        
-
-        //vlateral.setAlignment(Pos.CENTER);
         vlateral.setAlignment(Pos.TOP_CENTER);
+        
         TableView<Client> tblClients = new TableView<>();
         TableColumn<Client, String> colNom = new TableColumn<>("Nom");
         TableColumn<Client, String> colCognom = new TableColumn<>("Cognom");
         TableColumn<Client, String> colDni = new TableColumn<>("DNI");
         
-        colNom.setMinWidth(120);
-        colCognom.setMinWidth(120);
-        colDni.setMinWidth(120);
+        colNom.setMinWidth(130);
+        colCognom.setMinWidth(130);
+        colDni.setMinWidth(130);
                 
         tblClients.getColumns().addAll(colNom, colCognom, colDni);
         vlateral.getChildren().add(tblClients);
@@ -184,13 +197,25 @@ public class ProvesContenidorsJavaFX extends Application {
                     txtDni.setText(client.getDni());
                     txtNom.setText(client.getNom());
                     txtCognom.setText(client.getCognom());
-                    txtNumFamilia.setText(client.getnumFamilia());
-                    txtNivell.setText(String.valueOf(client.getNivell()));
-                    txtDataFederat.setText(String.valueOf(client.getDataFederat()));
-                    txtDataFamiliar.setText(String.valueOf(client.getDataFamiliar()));
+                    if(client.getNumFamilia() != null){
+                        txtNumFamilia.setText(client.getNumFamilia());
+                        txtDataFamiliar.setText(String.valueOf(client.getDataFamiliar()));
+                    }else{
+                        txtNumFamilia.setText("");
+                        txtDataFamiliar.setText("");
+                    }
+                    if(client.getNivell() != 0){
+                        txtNivell.setText(String.valueOf(client.getNivell()));
+                        txtDataFederat.setText(String.valueOf(client.getDataFederat()));
+                    }else{
+                        txtNivell.setText("");
+                        txtDataFederat.setText("");
+                    }
+                    
+                    
 
-                    if (tab1.isSelected())
-                        calcularPreuFinalColectiu();
+                    //if (tab1.isSelected())
+                    //    calcularPreuFinalColectiu();
                 }
             }
         });
@@ -205,6 +230,8 @@ public class ProvesContenidorsJavaFX extends Application {
         vb.setPadding(new Insets(10.0));
         vb.setSpacing(10.0);
         vb.setAlignment(Pos.CENTER);
+        vb.setMaxWidth(420);
+        vb.setMaxHeight(446);
 
         TabPane tp = new TabPane();
 
@@ -224,40 +251,47 @@ public class ProvesContenidorsJavaFX extends Application {
         
         VBox global = new VBox();
         global.setAlignment(Pos.CENTER);
-        global.setPadding(new Insets(-62, 0, 0, 0));
+        global.setMinWidth(250);
+        global.setPadding(new Insets(-14, 0, 0, 0));
         
         
         VBox vlateral = new VBox();
         Label titolClients = new Label("Clients");
         titolClients.setStyle("-fx-background-color:#c4c4c4; " + "-fx-font-family: ubuntu; -fx-font-weight: bold;");
-        titolClients.setPadding(new Insets(2, 90, 2, 90));
+        titolClients.setPadding(new Insets(2, 95, 2, 95));
         vlateral.getChildren().addAll(titolClients);
 
         vlateral.setAlignment(Pos.CENTER);
         GridPane gp = new GridPane();
         gp.setPadding(new Insets(10, 0, 10, 0));
         gp.setAlignment(Pos.CENTER);
-
+        
         lblNom = new Label("Nom");
-        lblCognom = new Label("Cognom");
-        lblDni = new Label("Dni");
-        lblNumFamilia = new Label("NumFamilia");
-        lblNivell = new Label("Nivell");
-        lblDataFederat = new Label("DataFederat");
-        lblDataFamiliar = new Label("DataFamiliar");
-
+        lblNom.setMinWidth(80);
         txtNom = new TextField();
         txtNom.setDisable(true);
+        
+        lblCognom = new Label("Cognom");
         txtCognom = new TextField();
         txtCognom.setDisable(true);
+        
+        lblDni = new Label("Dni");
         txtDni = new TextField();
         txtDni.setDisable(true);
+        
+        lblNumFamilia = new Label("NumFamilia");
         txtNumFamilia = new TextField();
         txtNumFamilia.setDisable(true);
+        
+        lblNivell = new Label("Nivell");
         txtNivell = new TextField();
         txtNivell.setDisable(true);
+        
+        lblDataFederat = new Label("DataFederat");
         txtDataFederat = new TextField();
         txtDataFederat.setDisable(true);
+        
+        lblDataFamiliar = new Label("DataFamiliar");
         txtDataFamiliar = new TextField();
         txtDataFamiliar.setDisable(true);
 
@@ -270,19 +304,20 @@ public class ProvesContenidorsJavaFX extends Application {
 
         gp.add(lblNumFamilia, 0, 3);
         gp.add(txtNumFamilia, 1, 3);
-        gp.add(lblNivell, 0, 4);
-        gp.add(txtNivell, 1, 4);
-        gp.add(lblDataFederat, 0, 5);
-        gp.add(txtDataFederat, 1, 5);
-        gp.add(lblDataFamiliar, 0, 6);
-        gp.add(txtDataFamiliar, 1, 6);
-
+        gp.add(lblDataFamiliar, 0, 4);
+        gp.add(txtDataFamiliar, 1, 4);
+        gp.add(lblNivell, 0, 5);
+        gp.add(txtNivell, 1, 5);
+        gp.add(lblDataFederat, 0, 6);
+        gp.add(txtDataFederat, 1, 6);
+       
+        
         vlateral.getChildren().add(gp);
 
         VBox vlateral2 = new VBox();
         Label titolCusrsos = new Label("Cursos");
         titolCusrsos.setStyle("-fx-background-color:#c4c4c4; " + "-fx-font-family: ubuntu; -fx-font-weight: bold;");
-        titolCusrsos.setPadding(new Insets(2, 90, 2, 90));
+        titolCusrsos.setPadding(new Insets(2, 95, 2, 95));
         vlateral2.getChildren().addAll(titolCusrsos);
 
         vlateral2.setAlignment(Pos.CENTER);
@@ -291,18 +326,22 @@ public class ProvesContenidorsJavaFX extends Application {
         gp2.setAlignment(Pos.CENTER);
 
         lblNomCurs = new Label("Nom");
-        lblIdCurs = new Label("ID");
-        lblPreuCurs = new Label("PreuCurs");
-        lblPreuFinalCurs = new Label("PreuFinalCurs");
-
+        lblNomCurs.setMinWidth(80);
         txtNomCurs = new TextField();
         txtNomCurs.setDisable(true);
+        
+        lblIdCurs = new Label("ID");
         txtIdCurs = new TextField();
         txtIdCurs.setDisable(true);
+        
+        lblPreuCurs = new Label("PreuCurs");
         txtPreuCurs = new TextField();
         txtPreuCurs.setDisable(true);
+        
+        lblPreuFinalCurs = new Label("PreuFinalCurs");
         txtPreuFinalCurs = new TextField();
         txtPreuFinalCurs.setDisable(true);
+        
 
         gp2.add(lblNomCurs, 0, 1);
         gp2.add(txtNomCurs, 1, 1);
@@ -377,6 +416,10 @@ public class ProvesContenidorsJavaFX extends Application {
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colDia.setCellValueFactory(new PropertyValueFactory<>("data"));
         colPreuFinal.setCellValueFactory(new PropertyValueFactory<>("preuFinal"));
+        
+        colNom.setMinWidth(168);//200
+        colDia.setMinWidth(130);//160
+        colPreuFinal.setMinWidth(100);//160
 
         for (CursColectiu CC : cc) {
 
@@ -387,7 +430,7 @@ public class ProvesContenidorsJavaFX extends Application {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 CursColectiu CI = (CursColectiu) newValue;
-
+                System.out.println(CI);
                 if (CI != null) {
                     txtNomCurs.setText(String.valueOf(CI.getNom()));
                     txtIdCurs.setText(String.valueOf(CI.getId()));
@@ -423,6 +466,12 @@ public class ProvesContenidorsJavaFX extends Application {
         colDatainici.setCellValueFactory(new PropertyValueFactory<>("dataInici"));
         colDataFi.setCellValueFactory(new PropertyValueFactory<>("dataFi"));
         colPreu.setCellValueFactory(new PropertyValueFactory<>("preu"));
+        
+        colNom.setMinWidth(126);
+        colNivell.setMinWidth(30);
+        colDatainici.setMinWidth(50);
+        colDataFi.setMinWidth(50);
+        colPreu.setMinWidth(60);
 
         for (CursCompeticio CC : ccom) {
             tblClients.getItems().add(CC);
@@ -460,8 +509,10 @@ public class ProvesContenidorsJavaFX extends Application {
 
         // colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-
         colPreuHora.setCellValueFactory(new PropertyValueFactory<>("preuHora"));
+        
+        colNom.setMinWidth(203);
+        colPreuHora.setMinWidth(195);
 
         for (CursIndividual CC : ci) {
             tblClients.getItems().add(CC);
@@ -535,14 +586,17 @@ public class ProvesContenidorsJavaFX extends Application {
         // 4 id curs
         // 5 dni
         // 6pasar que es colectiu
-
+        System.out.println("Tipo curs: " + tipoCurs);
+        System.out.println("preu:" + txtPreuCurs.getText());
+        System.out.println("Client: " + txtNom.getText());
+        
         if (txtPreuCurs.getText() != "" && txtDni.getText() != "") {
             preuCursFinal = Integer.parseInt(txtPreuCurs.getText());
         }
 
-        System.out.println(txtDataFamiliar.getText());
+        //System.out.println(txtDataFamiliar.getText());
 
-        System.out.println(txtDataFamiliar.getText().equals("null"));
+        //System.out.println(txtDataFamiliar.getText().equals("null"));
 
        
 
@@ -622,7 +676,7 @@ public class ProvesContenidorsJavaFX extends Application {
             // rs.getString("num_federacio"), rs.getInt("nivell"),
             // rs.getDate("DATAFED").toLocalDate(), rs.getDate("DATAFAM").toLocalDate()));
 
-            System.out.println(getLocalDate(rs, "DATAFED"));
+            //System.out.println(getLocalDate(rs, "DATAFED"));
 
             clients.add(new Client(rs.getString("dni"), rs.getString("nom"), rs.getString("cognom"),
                     rs.getInt("telefon"), rs.getString("email"), rs.getString("num_fam"), rs.getString("num_federacio"),

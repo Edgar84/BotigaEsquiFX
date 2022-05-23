@@ -103,11 +103,11 @@ public class Client {
         this.email = email;
     }
 
-    public String getnumFamilia() {
+    public String getNumFamilia() {
         return numFamilia;
     }
 
-    public void setnumFamilia(String numFamilia) {
+    public void setNumFamilia(String numFamilia) {
         this.numFamilia = numFamilia;
     }
 
@@ -121,7 +121,7 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client [cognom=" + cognom + ", dni=" + dni + ", email=" + email + ", familiaNombrosa=" + numFamilia + ", nom=" + nom + ", numFederat=" + numFederat + ", telefon=" + telefon + "]";
+        return "Client [nom=" + this.getNom() + ", cognom=" + this.getCognom() + ", dni=" + this.getDni() + ", email=" + this.getEmail() + ", familiaNombrosa=" + this.getNumFamilia() + ", numFederat=" + this.getNumFederat() + ", telefon=" + this.getTelefon() + "]";
     }
 
 
