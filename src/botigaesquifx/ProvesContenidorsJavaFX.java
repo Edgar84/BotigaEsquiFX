@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -41,10 +42,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
-* Classe per crear un escenari
-* @param conn requereix una connexió a la base de dades
-**/
 
 public class ProvesContenidorsJavaFX extends Application {
 
@@ -67,7 +64,7 @@ public class ProvesContenidorsJavaFX extends Application {
 
     TextField txtNom;
     TextField txtCognom;
-    static TextField txtDni;
+    TextField txtDni;
     TextField txtNumFamilia;
     TextField txtNivell;
     TextField txtDataFederat;
@@ -77,11 +74,10 @@ public class ProvesContenidorsJavaFX extends Application {
     Label lblIdCurs;
     Label lblPreuCurs;
     Label lblPreuFinalCurs;
-    Label emptyLabel;
 
     TextField txtNomCurs;
     TextField txtIdCurs;
-    static TextField txtPreuCurs;
+    TextField txtPreuCurs;
     TextField txtPreuFinalCurs;
 
     Tab tab1;
@@ -89,13 +85,9 @@ public class ProvesContenidorsJavaFX extends Application {
     Tab tab3;
     
     /**
-    * Mètode main que llança l'aplicaió JavaFX
-    * Abans d'iniciar carrega 4 mètodes:
-    * consultarCursosCompeticio()
-    * consultarCursosCompeticio()
-    * consultarCursosCompeticio()
-    * consultarCursosCompeticio()
-    **/
+     * @param args
+     * @throws SQLException 
+     */
     public static void main(String[] args) throws SQLException {
 
         conn.connexio();
@@ -107,6 +99,11 @@ public class ProvesContenidorsJavaFX extends Application {
         launch();
 
     }
+    /**
+     * Inicialita l'escenari amb un BorderPane que contindrà els diferents escenaris
+     * @param escenari
+     * @throws Exception 
+     */
 
     @Override
     public void start(Stage escenari) throws Exception {
@@ -121,17 +118,6 @@ public class ProvesContenidorsJavaFX extends Application {
         contenidor.setCenter(formulariCentral());
         contenidor.setRight(lateralDret());
 
-        // VBox contenidor = new VBox(); //organitza els nodes en vertical
-        // HBox contenidor = new HBox(); //organitza els nodes en horitzontal
-        // Pane contenidor = new Pane(); //coloca els nodes al cantó superior esquerra
-        // StackPane contenidor = new StackPane(); //apila els nodes un al damunt de
-        // l'altre
-        // FlowPane contenidor = new FlowPane();
-
-        // contenidor.getChildren().addAll(btn1,btn2,btn3);
-        // contenidor.setAlignment(Pos.CENTER);
-        // contenidor.setSpacing(20);
-
         Scene escena = new Scene(contenidor);
 
         escenari.setScene(escena);
@@ -140,10 +126,12 @@ public class ProvesContenidorsJavaFX extends Application {
 
         escenari.show();
     }
+    
     /**
-    * Part superior
-    * @param conn requereix una connexió a la base de dades
-    **/
+     * Part superior de l'escenari que conté el títol de l'aplicaió
+     * @return 
+     */
+    
     private Pane partSuperior() {
         HBox hb = new HBox();
         hb.setPadding(new Insets(15, 0, 15, 0));
@@ -157,6 +145,12 @@ public class ProvesContenidorsJavaFX extends Application {
         
         return hb;
     }
+    
+    /**
+     * Taula esquerra que conté als clients
+     * @return
+     * @throws SQLException 
+     */
 
     private Pane lateralEsquerre() throws SQLException {
         
@@ -211,17 +205,20 @@ public class ProvesContenidorsJavaFX extends Application {
                         txtNivell.setText("");
                         txtDataFederat.setText("");
                     }
-                    
-                    
-
-                    //if (tab1.isSelected())
-                    //    calcularPreuFinalColectiu();
+                    /*
+                    if (tab1.isSelected()){
+                        calcularPreuFinalColectiu();
+                    }
+                    */
                 }
             }
         });
         return vlateral;
     }
-    
+    /**
+     * Taula dreta que conté els cursos
+     * @return 
+     */
     private Pane lateralDret() {
 
         VBox vb = new VBox();
@@ -246,7 +243,10 @@ public class ProvesContenidorsJavaFX extends Application {
         vb.getChildren().addAll(titol, tp);
         return vb;
     }
-
+    /**
+     * Formulari central que recull tant les dades de client com les del curs
+     * @return 
+     */
     private VBox formulariCentral() {
         
         VBox global = new VBox();
@@ -341,7 +341,6 @@ public class ProvesContenidorsJavaFX extends Application {
         lblPreuFinalCurs = new Label("PreuFinalCurs");
         txtPreuFinalCurs = new TextField();
         txtPreuFinalCurs.setDisable(true);
-        
 
         gp2.add(lblNomCurs, 0, 1);
         gp2.add(txtNomCurs, 1, 1);
@@ -352,15 +351,16 @@ public class ProvesContenidorsJavaFX extends Application {
         gp2.add(lblPreuFinalCurs, 0, 4);
         gp2.add(txtPreuFinalCurs, 1, 4);
 
-        // return gp;
-
         vlateral2.getChildren().add(gp2);
         global.getChildren().add(vlateral);
         global.getChildren().add(vlateral2);
         return global;
 
     }
-
+    /**
+     * Part inferior, on conté button per netejar el formulari central i per fer la reserva
+     * @return 
+     */
     private Pane partInferior() {
         HBox hb = new HBox();
         hb.setPadding(new Insets(15, 0, 15, 0));
@@ -382,7 +382,10 @@ public class ProvesContenidorsJavaFX extends Application {
         hb.setAlignment(Pos.CENTER);
         return hb;
     }
-
+    /**
+     * Funció per netejar el formulari central
+     * @return 
+     */
     private Object netejarFormulari() {
         
         txtCognom.setText("");
@@ -397,7 +400,10 @@ public class ProvesContenidorsJavaFX extends Application {
         txtIdCurs.setText("");
         return lblCognom;
     }
-
+    /**
+     * Pane que mostra els cursos colectius
+     * @return 
+     */
     private Pane cursosColectius() {
 
         VBox vlateral = new VBox();
@@ -417,12 +423,11 @@ public class ProvesContenidorsJavaFX extends Application {
         colDia.setCellValueFactory(new PropertyValueFactory<>("data"));
         colPreuFinal.setCellValueFactory(new PropertyValueFactory<>("preuFinal"));
         
-        colNom.setMinWidth(168);//200
-        colDia.setMinWidth(130);//160
-        colPreuFinal.setMinWidth(100);//160
+        colNom.setMinWidth(168);
+        colDia.setMinWidth(130);
+        colPreuFinal.setMinWidth(100);
 
         for (CursColectiu CC : cc) {
-
             tblClients.getItems().add(CC);
         }
 
@@ -430,7 +435,7 @@ public class ProvesContenidorsJavaFX extends Application {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 CursColectiu CI = (CursColectiu) newValue;
-                System.out.println(CI);
+                //System.out.println(CI);
                 if (CI != null) {
                     txtNomCurs.setText(String.valueOf(CI.getNom()));
                     txtIdCurs.setText(String.valueOf(CI.getId()));
@@ -441,14 +446,16 @@ public class ProvesContenidorsJavaFX extends Application {
         });
         return vlateral;
     }
-
+    /**
+     * Pane que mostra els cursos per a Federats
+     * @return 
+     */
     private Pane cursosCometicio() {
         VBox vlateral = new VBox();
         vlateral.getChildren().addAll(new Label("CLIENTS"));
         vlateral.setAlignment(Pos.CENTER);
 
         TableView<CursCompeticio> tblClients = new TableView<>();
-        // TableColumn<CursCompeticio, String> colId = new TableColumn<>("ID");
         TableColumn<CursCompeticio, String> colNom = new TableColumn<>("NOM");
         TableColumn<CursCompeticio, String> colNivell = new TableColumn<>("NIVELL");
         TableColumn<CursCompeticio, String> colDatainici = new TableColumn<>("Data_inici");
@@ -491,7 +498,10 @@ public class ProvesContenidorsJavaFX extends Application {
         });
         return vlateral;
     }
-
+    /**
+     * Pane que mostra els curson individuals
+     * @return 
+     */
     private Pane cursosIndividuals() {
         VBox vlateral = new VBox();
         vlateral.getChildren().addAll(new Label("CLIENTS"));
@@ -533,7 +543,10 @@ public class ProvesContenidorsJavaFX extends Application {
         return vlateral;
 
     }
-
+    /**
+     * Consulta els cursos per a Federats disponibles i els posa en un Arraylist de CursCompeticio
+     * @throws SQLException 
+     */
     private static void consultarCursosCompeticio() throws SQLException {
 
         connexioBD = conn.getConnexioBD();
@@ -543,13 +556,14 @@ public class ProvesContenidorsJavaFX extends Application {
         PreparedStatement ps = connexioBD.prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            ccom.add(new CursCompeticio(rs.getInt("id"), rs.getString("nom"), rs.getString("dni_monitor"),
-                    rs.getInt("nivell"), rs.getDate("data_inici").toLocalDate(), rs.getDate("data_fi").toLocalDate(),
-                    rs.getInt("preu")));
+            ccom.add(new CursCompeticio(rs.getInt("id"), rs.getString("nom"), rs.getString("dni_monitor"), rs.getInt("nivell"), rs.getDate("data_inici").toLocalDate(), rs.getDate("data_fi").toLocalDate(), rs.getInt("preu")));
         }
 
     }
-
+    /**
+     * Consulta els cursos individuals disponibles i els posa en un Arraylist de CursIndividual
+     * @throws SQLException 
+     */
     private static void consultarCursosIndividual() throws SQLException {
 
         connexioBD = conn.getConnexioBD();
@@ -559,92 +573,13 @@ public class ProvesContenidorsJavaFX extends Application {
         PreparedStatement ps = connexioBD.prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            ci.add(new CursIndividual(rs.getInt("id"), rs.getString("nom"), rs.getString("dni_monitor"),
-                    rs.getInt("preu_hora")));
+            ci.add(new CursIndividual(rs.getInt("id"), rs.getString("nom"), rs.getString("dni_monitor"), rs.getInt("preu_hora")));
         }
     }
-
-    // private static void reservarCurs(){
-
-    // System.out.println(txtDni.getText());
-
-    // }
-
-    private void calcularPreuFinalColectiu() {
-
-        int preuCursFinal = 0;
-
-        String tipoCurs = tab1.getText();
-        // passar preu final
-        // passar el descompte
-        // passar el dni
-        // passar el id de curs
-
-        // 1descompre
-        // 2preufinal
-        // 3pasarun 0
-        // 4 id curs
-        // 5 dni
-        // 6pasar que es colectiu
-        System.out.println("Tipo curs: " + tipoCurs);
-        System.out.println("preu:" + txtPreuCurs.getText());
-        System.out.println("Client: " + txtNom.getText());
-        
-        if (txtPreuCurs.getText() != "" && txtDni.getText() != "") {
-            preuCursFinal = Integer.parseInt(txtPreuCurs.getText());
-        }
-
-        //System.out.println(txtDataFamiliar.getText());
-
-        //System.out.println(txtDataFamiliar.getText().equals("null"));
-
-       
-
-        if (txtDataFamiliar.getText().equals("null") != true) {
-            preuCursFinal = (int) (preuCursFinal * 0.60);
-        }
-
-        txtPreuFinalCurs.setText(Integer.toString(preuCursFinal));
-
-        System.out.println(tab1.getText());
-        System.out.println(preuCursFinal);
-
-        // btnReservar.setOnAction(e -> reservarCurs(60, preuCursFinal, 0, tipoCurs));
-       
-    }
-
-    private void reservarCurs(int descompte, int preuCursFinal, int j, String tipoCurs) {
-
-        int idCurs = Integer.parseInt(txtIdCurs.getText());
-        String dni = (txtDni.getText());
-
-        connexioBD = conn.getConnexioBD();
-
-        CallableStatement SQL;
-        try {
-            SQL = connexioBD.prepareCall("{call llogarCursos(?,?,?,?,?,?.?)}");
-        
-            SQL.setLong(1, descompte);
-            SQL.setLong(2, preuCursFinal);
-            SQL.setLong(3, j);
-            SQL.setLong(4, idCurs);
-            SQL.setString(5, dni);
-            SQL.setString(6, tipoCurs);
-            SQL.executeUpdate();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Cabecera");
-            alert.setTitle("Info");
-            alert.setContentText("Correcte reserva");
-            alert.showAndWait();
-
-
-        } catch (SQLException e) {
-           System.out.println("Error al insert");
-        }
-
-    };
-
+    /**
+     * Consulta els cursos colectius disponibles i els posa en un Arraylist de CursColectiu
+     * @throws SQLException 
+     */
     private static void consultarCursosColectiu() throws SQLException {
 
         connexioBD = conn.getConnexioBD();
@@ -654,11 +589,92 @@ public class ProvesContenidorsJavaFX extends Application {
         PreparedStatement ps = connexioBD.prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            cc.add(new CursColectiu(rs.getInt("id"), rs.getString("nom"), rs.getString("dni_monitor"),
-                     getLocalDate(rs, "data"), rs.getInt("preu")));
+            cc.add(new CursColectiu(rs.getInt("id"), rs.getString("nom"), rs.getString("dni_monitor"),getLocalDate(rs, "data"), rs.getInt("preu")));
         }
     }
+    /**
+     * Calcula el preu final d'un curs colectiu
+     */
+    private void calcularPreuFinalColectiu() {
 
+        int preuCursFinal = 0;
+
+        String tipoCurs = tab1.getText();
+        System.out.println("Tipo curs: " + tipoCurs);
+        System.out.println("preu:" + txtPreuCurs.getText());
+        System.out.println("Client: " + txtNom.getText());
+        
+        if (txtPreuCurs.getText() != "" && txtDni.getText() != "") {
+            preuCursFinal = Integer.parseInt(txtPreuCurs.getText());
+        }
+
+        if (!txtDataFamiliar.getText().equals("null")) {
+            preuCursFinal = (int) (preuCursFinal * 0.60); // li treu un 40%
+        }
+        System.out.println("PREU FINAL: " + txtPreuFinalCurs);
+        txtPreuFinalCurs.setText(Integer.toString(preuCursFinal));
+
+        if (!txtDni.getText().equals("") && !txtIdCurs.getText().equals("")) {
+            btnReservar.setOnAction(e -> reservarCurs());
+        } else {
+            btnReservar.setOnAction(e -> mostrarAlertWarning(e));
+        }
+       
+    }
+    /**
+     * Funció per realitzar la reserva d'un curs
+     */
+    private void reservarCurs() {
+
+        int descompte = 0;
+        int idCurs = 0;
+        int hores = 0;
+        int preuCursFinal = Integer.parseInt(txtPreuFinalCurs.getText());
+        String dni = txtDni.getText();
+        String tipoCurs = "colectiu";
+        
+        if (txtDataFamiliar.getText().equals("null") != true) {
+            descompte = 40;
+        }
+        
+        if (!txtIdCurs.getText().equals("")) {
+            idCurs = Integer.parseInt(txtIdCurs.getText());
+        }
+
+        connexioBD = conn.getConnexioBD();
+        CallableStatement SQL;
+        try {
+            SQL = connexioBD.prepareCall("{call llogarCursos(?,?,?,?,?,?)}");
+        
+            SQL.setLong(1, descompte);
+            SQL.setLong(2, preuCursFinal);
+            SQL.setLong(3, hores);
+            SQL.setLong(4, idCurs);
+            SQL.setString(5, dni);
+            SQL.setString(6, tipoCurs);
+            SQL.executeUpdate();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Reserva feta!");
+            alert.setTitle("Info");
+            alert.setContentText("Per anul·lar, truca al 973 31 22 04");
+            alert.showAndWait();
+
+
+        } catch (SQLException e) {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("Error al fer la reserva");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+        
+        netejarFormulari();
+    };
+    /**
+     * Consulta per agafar les dades dels clients i posar-los dins d'un ArrayList de Client
+     * @throws SQLException 
+     */
     private static void consultarClient() throws SQLException {
 
         connexioBD = conn.getConnexioBD();
@@ -668,22 +684,29 @@ public class ProvesContenidorsJavaFX extends Application {
         PreparedStatement ps = connexioBD.prepareStatement(SQL);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-
-            // System.out.println(rs.getDate("DATAFED"));
-            // Clients.add(new Client(rs.getString("dni"), rs.getString("nom"),
-            // rs.getString("cognom"),
-            // rs.getInt("telefon"), rs.getString("email"), rs.getString("num_fam"),
-            // rs.getString("num_federacio"), rs.getInt("nivell"),
-            // rs.getDate("DATAFED").toLocalDate(), rs.getDate("DATAFAM").toLocalDate()));
-
-            //System.out.println(getLocalDate(rs, "DATAFED"));
-
             clients.add(new Client(rs.getString("dni"), rs.getString("nom"), rs.getString("cognom"),
                     rs.getInt("telefon"), rs.getString("email"), rs.getString("num_fam"), rs.getString("num_federacio"),
                     rs.getInt("nivell"), getLocalDate(rs, "DATAFED"), getLocalDate(rs, "DATAFAM")));
         }
     }
-
+    /**
+     * Mostra alerta si no hi ha cap curs o cap client seleccionat
+     * @param event 
+     */
+    private void mostrarAlertWarning(ActionEvent event){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(null);
+        alert.setTitle("Info");
+        alert.setContentText("No tens cap curs seleccionat o cap client");
+        alert.showAndWait();
+    }
+    /**
+     * 
+     * @param rs
+     * @param columnName
+     * @return
+     * @throws SQLException 
+     */
     static public LocalDate getLocalDate(ResultSet rs, String columnName) throws SQLException {
         Date sqlDate = rs.getDate(columnName);
         return sqlDate == null ? null : sqlDate.toLocalDate();
