@@ -46,7 +46,7 @@ import javafx.stage.Stage;
 public class ProvesContenidorsJavaFX extends Application {
 
     private static ConnexioBD conn = new ConnexioBD();
-
+    private String tipoCurs = "";
     static Connection connexioBD;
 
     static ArrayList<Client> clients = new ArrayList<>();
@@ -74,11 +74,16 @@ public class ProvesContenidorsJavaFX extends Application {
     Label lblIdCurs;
     Label lblPreuCurs;
     Label lblPreuFinalCurs;
+    Label lblPreuHora;
+    Label lblHores;
 
     TextField txtNomCurs;
     TextField txtIdCurs;
     TextField txtPreuCurs;
     TextField txtPreuFinalCurs;
+    TextField txtPreuHora;
+    TextField txtHores;
+    private int txtNivellCurs;
 
     Tab tab1;
     Tab tab2;
@@ -205,7 +210,7 @@ public class ProvesContenidorsJavaFX extends Application {
                         txtNivell.setText("");
                         txtDataFederat.setText("");
                     }
-                    /*
+                    /* perque??
                     if (tab1.isSelected()){
                         calcularPreuFinalColectiu();
                     }
@@ -252,7 +257,7 @@ public class ProvesContenidorsJavaFX extends Application {
         VBox global = new VBox();
         global.setAlignment(Pos.CENTER);
         global.setMinWidth(250);
-        global.setPadding(new Insets(-14, 0, 0, 0));
+        global.setPadding(new Insets(25, 0, 0, 0));
         
         
         VBox vlateral = new VBox();
@@ -338,6 +343,13 @@ public class ProvesContenidorsJavaFX extends Application {
         txtPreuCurs = new TextField();
         txtPreuCurs.setDisable(true);
         
+        lblPreuHora = new Label("PreuHora");
+        txtPreuHora = new TextField();
+        txtPreuHora.setDisable(true);
+        
+        lblHores = new Label("PreuHora");
+        txtHores = new TextField();
+        
         lblPreuFinalCurs = new Label("PreuFinalCurs");
         txtPreuFinalCurs = new TextField();
         txtPreuFinalCurs.setDisable(true);
@@ -348,8 +360,12 @@ public class ProvesContenidorsJavaFX extends Application {
         gp2.add(txtIdCurs, 1, 2);
         gp2.add(lblPreuCurs, 0, 3);
         gp2.add(txtPreuCurs, 1, 3);
-        gp2.add(lblPreuFinalCurs, 0, 4);
-        gp2.add(txtPreuFinalCurs, 1, 4);
+        gp2.add(lblPreuHora, 0, 4);
+        gp2.add(txtPreuHora, 1, 4);
+        gp2.add(lblHores, 0, 5);
+        gp2.add(txtHores, 1, 5);
+        gp2.add(lblPreuFinalCurs, 0, 6);
+        gp2.add(txtPreuFinalCurs, 1, 6);
 
         vlateral2.getChildren().add(gp2);
         global.getChildren().add(vlateral);
@@ -386,7 +402,7 @@ public class ProvesContenidorsJavaFX extends Application {
      * Funció per netejar el formulari central
      * @return 
      */
-    private Object netejarFormulari() {
+    private void netejarFormulari() {
         
         txtCognom.setText("");
         txtNom.setText("");
@@ -398,7 +414,20 @@ public class ProvesContenidorsJavaFX extends Application {
         txtDataFamiliar.setText("");
         txtNomCurs.setText("");
         txtIdCurs.setText("");
-        return lblCognom;
+        txtPreuCurs.setText("");
+        txtPreuHora.setText("");
+        txtPreuFinalCurs.setText("");
+        //return lblCognom;
+    }
+    /**
+     * Funció per netejar només la info del curs central
+     */
+    private void netejarFormulariCurs() {
+        txtNomCurs.setText("");
+        txtIdCurs.setText("");
+        txtPreuCurs.setText("");
+        txtPreuHora.setText("");
+        txtPreuFinalCurs.setText("");
     }
     /**
      * Pane que mostra els cursos colectius
@@ -414,7 +443,7 @@ public class ProvesContenidorsJavaFX extends Application {
 
         TableColumn<CursColectiu, String> colNom = new TableColumn<>("NOM");
         TableColumn<CursColectiu, String> colDia = new TableColumn<>("data");
-        TableColumn<CursColectiu, String> colPreuFinal = new TableColumn<>("Preu Final");
+        TableColumn<CursColectiu, String> colPreuFinal = new TableColumn<>("Preu");
 
         tblClients.getColumns().addAll(colNom, colDia, colPreuFinal);
         vlateral.getChildren().add(tblClients);
@@ -435,11 +464,12 @@ public class ProvesContenidorsJavaFX extends Application {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 CursColectiu CI = (CursColectiu) newValue;
-                //System.out.println(CI);
                 if (CI != null) {
+                    netejarFormulariCurs();
                     txtNomCurs.setText(String.valueOf(CI.getNom()));
                     txtIdCurs.setText(String.valueOf(CI.getId()));
                     txtPreuCurs.setText(String.valueOf(CI.getPreuFinal()));
+                    txtHores.setText("");
                     calcularPreuFinalColectiu();
                 }
             }
@@ -461,8 +491,6 @@ public class ProvesContenidorsJavaFX extends Application {
         TableColumn<CursCompeticio, String> colDatainici = new TableColumn<>("Data_inici");
         TableColumn<CursCompeticio, String> colDataFi = new TableColumn<>("Data_Fi");
         TableColumn<CursCompeticio, String> colPreu = new TableColumn<>("Preu");
-        // TableColumn<Client, String> colEmail = new TableColumn<>("Email");
-        // TableColumn<Client, int> coltelefon = new TableColumn<>("Telefon");
 
         tblClients.getColumns().addAll(colNom, colNivell, colDatainici, colDataFi, colPreu);
         vlateral.getChildren().add(tblClients);
@@ -490,9 +518,13 @@ public class ProvesContenidorsJavaFX extends Application {
                 CursCompeticio CI = (CursCompeticio) newValue;
 
                 if (CI != null) {
+                    netejarFormulariCurs();
                     txtNomCurs.setText(String.valueOf(CI.getNom()));
                     txtIdCurs.setText(String.valueOf(CI.getId()));
-
+                    txtPreuCurs.setText(String.valueOf(CI.getPreu()));
+                    txtNivellCurs = CI.getNivell();
+                    txtHores.setText("");
+                    calcularPreuFinalCompeticio();
                 }
             }
         });
@@ -510,9 +542,6 @@ public class ProvesContenidorsJavaFX extends Application {
         TableView<CursIndividual> tblClients = new TableView<>();
         TableColumn<CursIndividual, String> colNom = new TableColumn<>("NOM");
         TableColumn<CursIndividual, String> colPreuHora = new TableColumn<>("Preu Hora");
-
-        // TableColumn<Client, String> colEmail = new TableColumn<>("Email");
-        // TableColumn<Client, int> coltelefon = new TableColumn<>("Telefon");
 
         tblClients.getColumns().addAll(colNom, colPreuHora);
         vlateral.getChildren().add(tblClients);
@@ -534,8 +563,12 @@ public class ProvesContenidorsJavaFX extends Application {
                 CursIndividual CI = (CursIndividual) newValue;
 
                 if (CI != null) {
+                    netejarFormulariCurs();
                     txtNomCurs.setText(String.valueOf(CI.getNom()));
                     txtIdCurs.setText(String.valueOf(CI.getId()));
+                    txtPreuCurs.setText("");
+                    txtPreuHora.setText(String.valueOf(CI.getPreuHora()));
+                    calcularPreuFinalIndividual();
                 }
             }
         });
@@ -598,47 +631,135 @@ public class ProvesContenidorsJavaFX extends Application {
     private void calcularPreuFinalColectiu() {
 
         int preuCursFinal = 0;
-
-        String tipoCurs = tab1.getText();
-        System.out.println("Tipo curs: " + tipoCurs);
-        System.out.println("preu:" + txtPreuCurs.getText());
-        System.out.println("Client: " + txtNom.getText());
         
         if (txtPreuCurs.getText() != "" && txtDni.getText() != "") {
             preuCursFinal = Integer.parseInt(txtPreuCurs.getText());
         }
-
-        if (!txtDataFamiliar.getText().equals("null")) {
+        
+        if (!txtDataFamiliar.getText().equals("")) {
             preuCursFinal = (int) (preuCursFinal * 0.60); // li treu un 40%
         }
-        System.out.println("PREU FINAL: " + txtPreuFinalCurs);
+        
         txtPreuFinalCurs.setText(Integer.toString(preuCursFinal));
 
         if (!txtDni.getText().equals("") && !txtIdCurs.getText().equals("")) {
-            btnReservar.setOnAction(e -> reservarCurs());
+            tipoCurs = "colectiu";
+            btnReservar.setOnAction(e -> reservarCurs(tipoCurs));
         } else {
             btnReservar.setOnAction(e -> mostrarAlertWarning(e));
         }
        
     }
+    
+    private void calcularPreuFinalCompeticio(){
+        int preuCursFinal = 0;
+        if (txtPreuCurs.getText() != "" && txtDni.getText() != "") {
+            preuCursFinal = Integer.parseInt(txtPreuCurs.getText());
+        }
+        txtPreuFinalCurs.setText(Integer.toString(preuCursFinal));
+        if (!txtDni.getText().equals("") && !txtIdCurs.getText().equals("")) {
+            tipoCurs = "federat";
+            btnReservar.setOnAction(e -> reservarCurs(tipoCurs));
+        } else {
+            btnReservar.setOnAction(e -> mostrarAlertWarning(e));
+        }
+    }
+    
+    private void calcularPreuFinalIndividual(){
+        
+        int preuHora = Integer.parseInt(txtPreuHora.getText());
+        double preuAmbHores = 0;
+        int hores = 0;
+        double preuFinal = 0;
+        
+        if(!txtHores.getText().equals("")){
+            if(txtHores.getText().matches(".*[1-6].*")){
+                hores = Integer.parseInt(txtHores.getText());
+                preuAmbHores = preuHora * hores;
+            }
+        }else{
+            txtPreuFinalCurs.setText("");
+        }
+        
+        if (!txtPreuHora.getText().equals("") && !txtDni.getText().equals("")) {
+            
+            if(hores < 3){
+                preuFinal = preuAmbHores * 0.80; // 1-2 hores un 20% de descompte
+            }else if(hores == 3){
+                preuFinal = preuAmbHores * 0.70; // 3 hores un 30% de descompte
+            }else if(hores == 6){
+                preuFinal = preuAmbHores * 0.50; // 6 hores un 50% de descompte
+            }else{
+                preuFinal = preuAmbHores;
+            }
+        }
+        
+        txtPreuFinalCurs.setText(Integer.toString((int) preuFinal));
+        
+        if (!txtDni.getText().equals("") && !txtIdCurs.getText().equals("")) {
+            tipoCurs = "individual";
+            btnReservar.setOnAction(e -> reservarCurs(tipoCurs));
+        } else {
+            btnReservar.setOnAction(e -> mostrarAlertWarning(e));
+        }
+    }
     /**
      * Funció per realitzar la reserva d'un curs
      */
-    private void reservarCurs() {
+    private void reservarCurs(String tipoCurs) {
 
         int descompte = 0;
         int idCurs = 0;
         int hores = 0;
         int preuCursFinal = Integer.parseInt(txtPreuFinalCurs.getText());
         String dni = txtDni.getText();
-        String tipoCurs = "colectiu";
         
-        if (txtDataFamiliar.getText().equals("null") != true) {
-            descompte = 40;
+        if(tipoCurs.equals("individual")){
+            if (!txtHores.getText().equals("") && !txtPreuHora.equals("") && txtHores.getText().matches(".*[1-6].*")) {
+                //tipoCurs = "individual";
+                hores = Integer.parseInt(txtHores.getText());
+                if(hores < 3){
+                    descompte = 20;
+                }else if (hores == 3){
+                    descompte = 30;
+                }else if (hores == 6){
+                    descompte = 50;
+                }else{
+                   descompte = 0;
+                }
+            }else{
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                if(txtHores.getText().equals("")){
+                    alert.setHeaderText("El camp hores no pot estar buit");
+                }else if(!txtHores.getText().matches(".*[1-6].*")){
+                    alert.setHeaderText("Has de reservar un mínim de 1 hora i un máxim de 6");
+                }
+                alert.setTitle("Info");
+                alert.setContentText("Si us plau, introdueix un numero del 1 al 6");
+                alert.showAndWait();
+                netejarFormulariCurs();
+                return;
+            }
+        }
+        
+        if(tipoCurs.equals("federat")){
+            if(Integer.parseInt(txtNivell.getText()) < txtNivellCurs){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Nivell del curs molt elevat");
+                alert.setTitle("Info");
+                alert.setContentText("Ets de nivell " + txtNivell.getText() + " i intentes accedir a un curs de nivell " + txtNivellCurs + "\nTorna quan tinguis un nivell més alt o agafa un de un nivell inferior");
+                alert.showAndWait();
+                netejarFormulariCurs();
+                return;
+            }
         }
         
         if (!txtIdCurs.getText().equals("")) {
             idCurs = Integer.parseInt(txtIdCurs.getText());
+        }
+        
+        if (!txtDataFamiliar.getText().equals("")) {
+            descompte = 40;
         }
 
         connexioBD = conn.getConnexioBD();
