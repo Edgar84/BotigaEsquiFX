@@ -347,7 +347,7 @@ public class ProvesContenidorsJavaFX extends Application {
         txtPreuHora = new TextField();
         txtPreuHora.setDisable(true);
         
-        lblHores = new Label("PreuHora");
+        lblHores = new Label("Hores");
         txtHores = new TextField();
         
         lblPreuFinalCurs = new Label("PreuFinalCurs");
